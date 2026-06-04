@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Texture Atlas Creator</title>
+  <meta name="description" content="Зручний веб-генератор атласів текстур із регулярною сіткою. Створюйте Texture Atlas та оптимізовані мініфіковані JS/JSON маніфести координат прямо в браузері.">
+  <link rel="logo" href="img/my-logo/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/themes/general.css">
+  <link rel="stylesheet" href="css/themes/light.css">
+  <link rel="stylesheet" href="css/themes/dark.css">
+  
+  <link rel="stylesheet" href="css/utils.css">
+  <link rel="stylesheet" href="css/main-style.css">
+  
+  <link rel="stylesheet" href="css/layouts/main-banner.css">
+  <link rel="stylesheet" href="css/layouts/main-footer.css">
+  
+  <link rel="stylesheet" href="css/pages/main.css">
+</head>
+
+<body>
+  <div class="root" id="root">
+    <header class="main-banner">
+      <div class="logo-wrap">
+        <img class="logo-img" src="img/my-logo/logo.svg" alt="my-logo" />
+        <h1 class="logo-text">Texture Atlas Creator</h1>
+      </div>
+      <div class="btn-wrap">
+        <button class="btn" data-type="btn:theme" aria-label="перемикач теми">
+          <img id="theme-img" src="img/themes/light.svg" alt="theme">
+        </button>
+      </div>
+    </header>
+    
+    <main class="main">
+      <section class="section">
+        <h2>Увага! Статус проєкта ALPHA, деякий функціонал ще не дороблено!</h2>
+        <h2>Введіть параметри</h2>
+        <p>За замовчуванням рядків та колон по 16 (256 предметів) а розмір атласа 2048px × 2048px</p>
+        <div class="input-wrap">
+          <input class="input-atlas-param" data-type="input:atlas-items-x" type="number" placeholder="Кількість колон"/>
+          <input class="input-atlas-param" data-type="input:atlas-items-y" type="number" placeholder="Кількість рядків"/>
+          <input class="input-atlas-param" data-type="input:atlas-px-x" type="number" placeholder="Атлас px по x"/>
+          <input class="input-atlas-param" data-type="input:atlas-px-y" type="number" placeholder="Атлас px по y"/>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Готові шаблони px атласу</h2>
+        <div class="atlas-value-templates-wrap" data-type="px">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Готові шаблони елементів атласу</h2>
+        <div class="atlas-value-templates-wrap" data-type="items">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <label class="choose-img-label" data-type="input:choose-img">
+        Вибрати зображення
+        <input type="file" accept="image/*" multiple webkitdirectory>
+      </label>
+      
+      <section class="section">
+        <h2>Всі вибрані зображення</h2>
+        <div class="all-choose-img-wrap">
+          <div class="general-info-wrap">
+            <span id="general-all-choose-img-info-text">Спочатку виберіть зображення...</span>
+            <div class="btn-wrap">
+              <button data-type="btn:download-info-all-choose-img" aria-label="Завантажити інформацію про всі вибрані зображення">
+                <svg><use href="#download"/></svg>
+              </button>
+              <button data-type="btn:copy-info-all-choose-img" aria-label="Скопіювати інформацію про всі вибрані зображення">
+                <svg><use href="#copy"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="all-img-info-wrap" id="all-img-info-wrap">
+            Пусто...
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Перегляд атласа</h2>
+        <div class="atlas-wrap" id="atlas-wrap">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Завантажити зображення атласа</h2>
+        <div class="atlas-value-templates-wrap" data-type="img-download">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Завантажити код атласа</h2>
+        <div class="atlas-value-templates-wrap" data-type="code-download">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Завантажити все</h2>
+        <div class="atlas-value-templates-wrap" data-type="all-download">
+          <!--content add js-->
+        </div>
+      </section>
+      
+      <button class="btn-download" data-type="btn:atlas-all-res-download">Завантажити</button>
+    </main>
+    
+    
+  <footer class="footer-copy-wrap">
+    <div class="logo-wrap">
+      <img class="logo" src="img/my-logo/logo.svg" alt="Моє лого">
+      <img class="logo" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Лого GitHub">
+      <img class="logo mit" src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="Знак ліцензії MIT">
+    </div>
+    
+    <br>
+    <strong>Всі мої (завершені) проєкти розміщені на GitHub під ліцензією MIT.</strong>
+    <br>
+    <h3>PortfolioHub</h3>
+    <p>PortfolioHub — збірка всіх моїх проєктів з детальним описом технологій реалізації та відмінностей, посиланнями на проєкти та вихідний код. А також детальна інформація про мене як програміста, опис моїх навичок, мої контакти. Найбільш корисно для IT роботодавців та інших людей пов'язаних з IT.</p>
+    <a href="https://kingalaluna.github.io/PortfolioHub/">Перейти на PortfolioHub</a>
+    <a href="https://github.com/KingAlaluna/PortfolioHub.git">Глянути вихідний код</a>
+    
+    
+    <h3>Коротка інформація та посилання на інші мої проєкти:</h3>
+    
+    <div class="all-my-projects-wrap" id="all-my-projects-wrap">
+      <!--content add js-->
+    </div>
+    
+    <h2>Мої контакти:</h2>
+    <h3>Вам потрібно зробити сайт чи хочете запропонувати вакансію? Напишіть мені!</h3>
+    <address class="my-contacts-wrap">
+      <a href="https://t.me/Viktor_2352" target="_blank" rel="noopener noreferrer">
+        <img class="logo" src="img/not-my-logo/telegram.svg" alt="Лого Telegram">
+      </a>
+    </address>
+    <div class="copy-wrap">
+      <img class="logo" src="img/my-logo/logo.svg" alt="Моє лого">
+      <span class="copy-text">&copy; Texture Atlas Creator 2026 | v0.1.0-alpha-1.</span>
+    </div>
+  </footer>
+  </div>
+  
+  
+  <!--templates svg img-->
+  <div class="svg-template-wrap">
+    <svg id="copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2,2 18,2 18,18 2,18z M18,6 22,6 22,22 6,22 6,18"/>
+    </svg>
+    <svg id="download" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12,2 12,22 2,12 M22,12 12,22"/>
+    </svg>
+  </div>
+  
+  <script type="module" src="js/logic/main-logic.js"></script>
+</body>
+</html>

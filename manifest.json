@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0-alpha-1",
+  "lang": "uk-UK",
+  "name": "Texture Atlas Creator",
+  "short_name": "Texture Atlas Creator",
+  "description": "Зручний веб-генератор атласів текстур із регулярною сіткою. Створюйте Texture Atlas та оптимізовані мініфіковані JS/JSON маніфести координат прямо в браузері.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "img/my-logo/icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/my-logo/icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
