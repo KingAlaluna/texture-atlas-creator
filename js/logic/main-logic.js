@@ -2,7 +2,7 @@ import {html} from '../data/config.js';
 import {applyTheme} from './theme.js';
 import {} from './add-elements.js';
 import {} from './main-footer.js';
-import {download} from './utils.js';
+import {download, downloadZip} from './utils.js';
 import {} from '../../sw-init.js';
 
 
@@ -19,6 +19,11 @@ const atlasConfig = {
     img: new Set(),
     code: new Set(),
     all: new Set(),
+  },
+  downloadRes: {
+    //img: {},
+    code: {},
+    //all: {},
   },
   allImgInfo: {
     array: [],
@@ -51,7 +56,25 @@ html.root.addEventListener('click', (e) => {
     navigator.clipboard.writeText(atlasConfig.allImgInfo.text);
   }
   else if (value == 'atlas-all-res-download') {
-    
+    atlasConfig.download.img.forEach(el => {
+      if (el == '.zip') {
+        
+      } else {
+        
+      }
+    });
+    atlasConfig.download.code.forEach(el => {
+      if (el == '.zip') {
+        downloadZip(atlasConfig.downloadRes.code);
+      } else {
+        download(atlasConfig.downloadRes.code[el], `atlas-texture${el}`);
+      }
+    });
+    atlasConfig.download.all.forEach(el => {
+      if (el == '.zip') {
+        
+      }
+    });
   }
 });
 
@@ -85,6 +108,8 @@ html.root.addEventListener('input', (e) => {
     
     const files = input.files;
     console.log(files);
+    let codeAtlasTexture = '';
+    
     for (let i = 0; i < files.length; i++) {
       const e = files[i];
       
@@ -92,6 +117,12 @@ html.root.addEventListener('input', (e) => {
       const {name, size, type} = e;
       atlasConfig.allImgInfo.array.push({name, size, type});
       atlasConfig.allImgInfo.generalSize += size;
+      
+      codeAtlasTexture += `'${name}':[${((files.length - 1) % atlasConfig.items.x) + 1},${Math.ceil(files.length / atlasConfig.items.y)}]`;
+      
+      atlasConfig.downloadRes.code['.js'] = `const atlasTexture={${codeAtlasTexture}};`;
+      atlasConfig.downloadRes.code['.json'] = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
+      
       
       html.allImgInfoWrap.insertAdjacentHTML('beforeend', `<div class="img-data-wrap"><span class="name">${name}</span><span class="info">${type} ${fileSize(size)}</span></div>`);
       
@@ -106,7 +137,11 @@ html.root.addEventListener('input', (e) => {
       reader.readAsDataURL(e);
     }
     html.generalAllChooseImgInfoText.textContent = `${files.length}\t\t\t\t${fileSize(atlasConfig.allImgInfo.generalSize)}`;
+    
+    //atlasConfig
   } 
+  
+  
   else if (type == 'input') {
     const [elementType, key, val] = value.split('-');
     if (elementType !== 'atlas') return;
@@ -116,6 +151,8 @@ html.root.addEventListener('input', (e) => {
     html.atlasWrap.style.aspectRatio = `${atlasConfig.px.x} / ${atlasConfig.px.y}`;
     html.atlasWrap.style.gridTemplate = `repeat(${atlasConfig.items.y}, 1fr) / repeat(${atlasConfig.items.x}, 1fr)`;
   }
+  
+  
   else if (type == 'label') {
     const typeValue = target.dataset.typeValue;
     const input = target.querySelector('input');
