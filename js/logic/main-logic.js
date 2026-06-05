@@ -118,13 +118,18 @@ html.root.addEventListener('input', (e) => {
       atlasConfig.allImgInfo.array.push({name, size, type});
       atlasConfig.allImgInfo.generalSize += size;
       
-      codeAtlasTexture += `'${name}':[${((files.length - 1) % atlasConfig.items.x) + 1},${Math.ceil(files.length / atlasConfig.items.y)}]`;
+      codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < files.length - 1 ? ',' : ''}`;
       
       atlasConfig.downloadRes.code['.js'] = `const atlasTexture={${codeAtlasTexture}};`;
       atlasConfig.downloadRes.code['.json'] = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
       
       
-      html.allImgInfoWrap.insertAdjacentHTML('beforeend', `<div class="img-data-wrap"><span class="name">${name}</span><span class="info">${type} ${fileSize(size)}</span></div>`);
+      html.allImgInfoWrap.insertAdjacentHTML('beforeend', `
+        <div class="img-data-wrap">
+          <span class="name">${i+1}:\t${name}</span>
+          <span class="info">${type} ${fileSize(size)}</span>
+        </div>
+      `);
       
       //img view
       const reader = new FileReader();
@@ -137,8 +142,6 @@ html.root.addEventListener('input', (e) => {
       reader.readAsDataURL(e);
     }
     html.generalAllChooseImgInfoText.textContent = `${files.length}\t\t\t\t${fileSize(atlasConfig.allImgInfo.generalSize)}`;
-    
-    //atlasConfig
   } 
   
   

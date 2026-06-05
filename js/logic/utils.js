@@ -1,9 +1,6 @@
 import JSZip from 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm';
 
 
-const zip = new JSZip();
-
-
 export function download(content, fileName) {
   const typeFile = fileName.split('.').pop();
   
@@ -25,6 +22,8 @@ export function download(content, fileName) {
 
 
 export async function downloadZip(content) {
+  const zip = new JSZip();
+  
   for (const key in content) {
     zip.file(`atlas-texture${key}`, content[key]);
   }
@@ -32,7 +31,7 @@ export async function downloadZip(content) {
   const blobUrl = URL.createObjectURL(blobZip);
   
   const link = document.createElement('a');
-  link.url = blobUrl;
+  link.href = blobUrl;
   link.download = 'atlas-texture.zip';
   link.click();
   URL.revokeObjectURL(blobUrl);

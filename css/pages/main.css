@@ -135,7 +135,13 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--text-2);
+      gap: 2rem;
       
+      .name {
+        flex: 0 1 auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
       .info {
         color: var(--text-2);
         width: min-content;
