@@ -1,39 +1,9 @@
-import {html} from '../data/config.js';
+import {html, atlasConfig} from '../data/config.js';
 import {applyTheme} from './theme.js';
 import {} from './add-elements.js';
 import {} from './main-footer.js';
-import {download, downloadZip} from './utils.js';
+import {fileSize, download} from './utils.js';
 import {} from '../../sw-init.js';
-
-
-const atlasConfig = {
-  items: {
-    x: 16,
-    y: 16,
-  },
-  px: {
-    x: 2048,
-    y: 2048,
-  },
-  download: {
-    img: new Set(),
-    code: new Set(),
-    all: new Set(),
-  },
-  downloadRes: {
-    //img: {},
-    code: {},
-    //all: {},
-  },
-  allImgInfo: {
-    array: [],
-    text: '',
-    generalSize: 0,
-  },
-};
-
-
-const fileSize = (sizeValue) => sizeValue / 1024 / 1024 / 1024 >= 1 ? `${(sizeValue / 1024 / 1024 / 1024).toFixed(2)}GB` : sizeValue / 1024 / 1024 >= 1 ? `${(sizeValue / 1024 / 1024).toFixed(2)}MB` : sizeValue / 1024 >= 1 ? `${(sizeValue / 1024).toFixed(2)}KB` : `${sizeValue}B`;
 
 
 //btn
@@ -47,34 +17,19 @@ html.root.addEventListener('click', (e) => {
   if (value == 'theme') {
     applyTheme();
   }
+  
   else if (value == 'download-info-all-choose-img') {
     textInfoAllChooseImg();
-    download(atlasConfig.allImgInfo.text, 'info-all-choose-img.txt');
+    download('text');
   }
+  
   else if (value == 'copy-info-all-choose-img') {
     textInfoAllChooseImg();
     navigator.clipboard.writeText(atlasConfig.allImgInfo.text);
   }
+  
   else if (value == 'atlas-all-res-download') {
-    atlasConfig.download.img.forEach(el => {
-      if (el == '.zip') {
-        
-      } else {
-        
-      }
-    });
-    atlasConfig.download.code.forEach(el => {
-      if (el == '.zip') {
-        downloadZip(atlasConfig.downloadRes.code);
-      } else {
-        download(atlasConfig.downloadRes.code[el], `atlas-texture${el}`);
-      }
-    });
-    atlasConfig.download.all.forEach(el => {
-      if (el == '.zip') {
-        
-      }
-    });
+    download('res');
   }
 });
 
@@ -97,6 +52,7 @@ html.root.addEventListener('input', (e) => {
   const [type, value] = target?.dataset?.type?.split(':') || [null, null];
   if (type != 'input' && type != 'label') return;
   
+  //choose img
   if (type == 'input' && value == 'choose-img') {
     const input = target.querySelector('input');
     if (!input) return;
@@ -106,22 +62,16 @@ html.root.addEventListener('input', (e) => {
     atlasConfig.allImgInfo.array = [];
     atlasConfig.allImgInfo.generalSize = 0;
     
-    const files = input.files;
-    console.log(files);
-    let codeAtlasTexture = '';
+    atlasConfig.files = input.files;
+    console.log(atlasConfig.files);
     
-    for (let i = 0; i < files.length; i++) {
-      const e = files[i];
+    for (let i = 0; i < atlasConfig.files.length; i++) {
+      const e = atlasConfig.files[i];
       
       //img info
       const {name, size, type} = e;
       atlasConfig.allImgInfo.array.push({name, size, type});
       atlasConfig.allImgInfo.generalSize += size;
-      
-      codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < files.length - 1 ? ',' : ''}`;
-      
-      atlasConfig.downloadRes.code['.js'] = `const atlasTexture={${codeAtlasTexture}};`;
-      atlasConfig.downloadRes.code['.json'] = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
       
       
       html.allImgInfoWrap.insertAdjacentHTML('beforeend', `
@@ -141,10 +91,13 @@ html.root.addEventListener('input', (e) => {
       };
       reader.readAsDataURL(e);
     }
-    html.generalAllChooseImgInfoText.textContent = `${files.length}\t\t\t\t${fileSize(atlasConfig.allImgInfo.generalSize)}`;
+    
+    addCodeAtlasTexture();
+    html.generalAllChooseImgInfoText.textContent = `${atlasConfig.files.length}\t\t\t\t${fileSize(atlasConfig.allImgInfo.generalSize)}`;
   } 
   
   
+  //input
   else if (type == 'input') {
     const [elementType, key, val] = value.split('-');
     if (elementType !== 'atlas') return;
@@ -156,6 +109,7 @@ html.root.addEventListener('input', (e) => {
   }
   
   
+  //label
   else if (type == 'label') {
     const typeValue = target.dataset.typeValue;
     const input = target.querySelector('input');
@@ -169,6 +123,8 @@ html.root.addEventListener('input', (e) => {
       
       html.atlasWrap.style.aspectRatio = `${atlasConfig.px.x} / ${atlasConfig.px.y}`;
       html.atlasWrap.style.gridTemplate = `repeat(${atlasConfig.items.y}, 1fr) / repeat(${atlasConfig.items.x}, 1fr)`;
+      
+      addCodeAtlasTexture();
     }
     else if (value == 'atlas-downloads') {
       const checked = input.checked;
@@ -178,3 +134,15 @@ html.root.addEventListener('input', (e) => {
   console.log('atlasConfig', atlasConfig);
 });
 
+
+function addCodeAtlasTexture() {
+  let codeAtlasTexture = '';
+  
+  atlasConfig.files.forEach((e, i) => {
+    const {name} = e;
+    codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < atlasConfig.files.length - 1 ? ',' : ''}`;
+  });
+  
+  atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture}};`;
+  atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
+}

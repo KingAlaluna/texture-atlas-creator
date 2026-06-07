@@ -1,9 +1,4 @@
-import {html} from '../data/config.js';
-
-
-const dataImgDownload = ['.png', '.webp', '.jpg', '.jpeg', '.zip'];
-const dataCodeDownload = ['.js', '.json', '.zip'];
-const dataAllDownload = ['.zip'];
+import {html, atlasConfig} from '../data/config.js';
 
 
 html.atlasValueTemplatesWrap.forEach(e => {
@@ -34,7 +29,7 @@ html.atlasValueTemplatesWrap.forEach(e => {
     }
   }
   else if (type == 'img-download') {
-    dataImgDownload.forEach(el => {
+    atlasConfig.dataImgDownload.forEach(el => {
       e.insertAdjacentHTML('beforeend', `
         <label class="label" data-type="label:atlas-downloads" data-type-value="img">
           <input type="checkbox" value="${el}">
@@ -44,7 +39,7 @@ html.atlasValueTemplatesWrap.forEach(e => {
     });
   }
   else if (type == 'code-download') {
-    dataCodeDownload.forEach(el => {
+    atlasConfig.dataCodeDownload.forEach(el => {
       e.insertAdjacentHTML('beforeend', `
         <label class="label" data-type="label:atlas-downloads" data-type-value="code">
           <input type="checkbox" value="${el}">
@@ -54,7 +49,7 @@ html.atlasValueTemplatesWrap.forEach(e => {
     });
   }
   else if (type == 'all-download') {
-    dataAllDownload.forEach(el => {
+    atlasConfig.dataAllDownload.forEach(el => {
       e.insertAdjacentHTML('beforeend', `
         <label class="label" data-type="label:atlas-downloads" data-type-value="all">
           <input type="checkbox" value="${el}">
