@@ -138,10 +138,12 @@ html.root.addEventListener('input', (e) => {
 function addCodeAtlasTexture() {
   let codeAtlasTexture = '';
   
-  atlasConfig.files.forEach((e, i) => {
+  for (let i = 0; i < atlasConfig.files.length; i++) {
+    const e = atlasConfig.files[i];
+    
     const {name} = e;
     codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < atlasConfig.files.length - 1 ? ',' : ''}`;
-  });
+  }
   
   atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture}};`;
   atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
