@@ -84,7 +84,7 @@ async function imgDownload(types) {
       const zipContent = {};
       const imgTypes = [];
       
-      imgArray.forEach(e => {
+      atlasConfig.dataImgDownload.forEach(e => {
         if (e == 'zip') return;
         imgTypes.push(e);
       });
@@ -111,15 +111,11 @@ async function imgDownload(types) {
 
 //all download
 async function allDownload() {
-  let blobs = [];
-  
   const allImgDownload = await imgDownload(atlasConfig.dataImgDownload);
   const allCodeDownload = await codeDownload(atlasConfig.dataCodeDownload);
   const allFileDownload = await zipDownload([...allImgDownload, ...allCodeDownload]);
   
-  blobs = allFileDownload;
-  
-  return blobs;
+  return [{blob: allFileDownload, typeFile: 'zip'}];
 }
 
 
