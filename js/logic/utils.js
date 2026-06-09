@@ -73,12 +73,14 @@ async function imgDownload(types) {
   
   const sizes = atlasConfig.px;
   
-  const imgContent = html.atlasWrap.outerHTML;
+  const atlasClone = html.atlasWrap.cloneNode(true);
+  const atlasSerializer = new XMLSerializer();
+  const atlasImg = atlasSerializer.serializeToString(atlasClone);
   
   const svgTemplate = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${sizes.x}" height="${sizes.y}">
       <foreignObject width="100%" height="100%">
-        ${imgContent}
+        ${atlasImg}
       </foreignObject>
     </svg>
   `;
@@ -212,4 +214,3 @@ async function generalDownload() {
   
   return blobs;
 }
-

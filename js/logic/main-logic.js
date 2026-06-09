@@ -136,6 +136,8 @@ html.root.addEventListener('input', (e) => {
 
 
 function addCodeAtlasTexture() {
+  if (!atlasConfig.files) return;
+  
   let codeAtlasTexture = '';
   
   for (let i = 0; i < atlasConfig.files.length; i++) {
