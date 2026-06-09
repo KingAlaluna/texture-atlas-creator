@@ -5,7 +5,7 @@ const c = (classes) => document.querySelectorAll(`.${classes}`);
 export const html = {
   html: document.documentElement,
   root: i('root'),
-  atlasWrap: i('atlas-wrap'),
+  atlasCanvas: i('atlas-canvas'),
   allImgInfoWrap: i('all-img-info-wrap'),
   
   atlasValueTemplatesWrap: c('atlas-value-templates-wrap'),
@@ -40,7 +40,7 @@ export const atlasConfig = {
     text: '',
     generalSize: 0,
   },
-  dataImgDownload: ['svg', 'png', 'webp', 'jpg', 'zip'],
+  dataImgDownload: ['png', 'webp', 'jpg', 'zip'],
   dataCodeDownload: ['js', 'json', 'zip'],
   dataAllDownload: ['zip'],
   files: null,

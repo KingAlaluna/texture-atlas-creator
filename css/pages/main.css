@@ -8,17 +8,10 @@
     height: max-content;
   }
   
-  .atlas-wrap {
+  .atlas-canvas {
     width: 100%;
-    aspect-ratio: 2048 / 2048;
-    display: grid;
-    grid-template: repeat(16, 1fr) / repeat(16, 1fr);
+    aspect-ratio: 1 / 1;
     background: var(--header__nav-bg);
-    
-    img {
-      width: 100%;
-      height: 100%;
-    }
   }
   
   .input-wrap,

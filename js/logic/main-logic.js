@@ -57,7 +57,6 @@ html.root.addEventListener('input', (e) => {
     const input = target.querySelector('input');
     if (!input) return;
     
-    html.atlasWrap.innerHTML = '';
     html.allImgInfoWrap.innerHTML = '';
     atlasConfig.allImgInfo.array = [];
     atlasConfig.allImgInfo.generalSize = 0;
@@ -80,18 +79,9 @@ html.root.addEventListener('input', (e) => {
           <span class="info">${type} ${fileSize(size)}</span>
         </div>
       `);
-      
-      //img view
-      const reader = new FileReader();
-      
-      reader.onload = (o) => {
-        const img = document.createElement('img');
-        img.src = o.target.result;
-        html.atlasWrap.append(img);
-      };
-      reader.readAsDataURL(e);
     }
     
+    atlasImgView();
     addCodeAtlasTexture();
     html.generalAllChooseImgInfoText.textContent = `${atlasConfig.files.length}\t\t\t\t${fileSize(atlasConfig.allImgInfo.generalSize)}`;
   } 
@@ -103,9 +93,6 @@ html.root.addEventListener('input', (e) => {
     if (elementType !== 'atlas') return;
     
     atlasConfig[key][val] = Number(target.value);
-    
-    html.atlasWrap.style.aspectRatio = `${atlasConfig.px.x} / ${atlasConfig.px.y}`;
-    html.atlasWrap.style.gridTemplate = `repeat(${atlasConfig.items.y}, 1fr) / repeat(${atlasConfig.items.x}, 1fr)`;
   }
   
   
@@ -121,9 +108,7 @@ html.root.addEventListener('input', (e) => {
       atlasConfig[typeValue].x = Number(x);
       atlasConfig[typeValue].y = Number(y);
       
-      html.atlasWrap.style.aspectRatio = `${atlasConfig.px.x} / ${atlasConfig.px.y}`;
-      html.atlasWrap.style.gridTemplate = `repeat(${atlasConfig.items.y}, 1fr) / repeat(${atlasConfig.items.x}, 1fr)`;
-      
+      atlasImgView();
       addCodeAtlasTexture();
     }
     else if (value == 'atlas-downloads') {
@@ -149,4 +134,46 @@ function addCodeAtlasTexture() {
   
   atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture}};`;
   atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
+}
+
+
+//atlas img view
+function atlasImgView() {
+  if (!atlasConfig.files || atlasConfig.files.length === 0) return;
+
+  const sizes = atlasConfig.px;
+  const columns = atlasConfig.items.x;
+  const rows = atlasConfig.items.y;
+
+  const canvas = html.atlasCanvas;
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = sizes.x;
+  canvas.height = sizes.y;
+
+  ctx.clearRect(0, 0, sizes.x, sizes.y);
+
+  const cellWidth = sizes.x / columns;
+  const cellHeight = sizes.y / rows;
+
+  for (let i = 0; i < atlasConfig.files.length; i++) {
+    const image = atlasConfig.files[i];
+    
+    const col = i % columns;
+    const row = Math.floor(i / columns);
+    
+    const x = col * cellWidth;
+    const y = row * cellHeight;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      
+      img.onload = () => {
+        ctx.drawImage(img, x, y, cellWidth, cellHeight);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(image);
+  }
 }

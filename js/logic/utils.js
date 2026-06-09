@@ -47,12 +47,14 @@ async function zipDownload(content) {
         typeFile,
       } = e;
       
-      zip.file(`atlas-texture.${typeFile}`, blob);
+      const data = getType(blob) == 'blob' ? await blob.arrayBuffer() : blob;
+      zip.file(`atlas-texture.${typeFile}`, data);
     });
   }
   else if (getType(content) == 'object') {
     for (const key in content) {
-      zip.file(`atlas-texture.${key}`, content[key]);
+      const data = getType(content[key]) == 'blob' ? await content[key].arrayBuffer() : content[key];
+      zip.file(`atlas-texture.${key}`, data);
     }
   }
   
@@ -63,58 +65,22 @@ async function zipDownload(content) {
 
 
 //img download
-const loadImg = (img, url) => new Promise((resolve) => {
-  img.onload = () => resolve();
-  img.src = url;
-})
-
 async function imgDownload(types) {
   const imgArray = [...types];
   
-  const sizes = atlasConfig.px;
-  
-  const atlasClone = html.atlasWrap.cloneNode(true);
-  const atlasSerializer = new XMLSerializer();
-  const atlasImg = atlasSerializer.serializeToString(atlasClone);
-  
-  const svgTemplate = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${sizes.x}" height="${sizes.y}">
-      <foreignObject width="100%" height="100%">
-        ${atlasImg}
-      </foreignObject>
-    </svg>
-  `;
-  
   const blobs = [];
   
-  const blob = new Blob([svgTemplate], {type: 'image/svg+xml;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
+  const canvas = html.atlasCanvas;
   
-  
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  
-  canvas.width = sizes.x;
-  canvas.height = sizes.y;
-  
-  const img = new Image();
-  await loadImg(img, url);
-  
-  
-  const getCanvasBlob = (type) => new Promise(res => canvas.toBlob(res, `image/${type}`));
-  
-  
-  ctx.drawImage(img, 0, 0, sizes.x, sizes.y);
+  const getCanvasBlob = (type) => new Promise(res => {
+    canvas.toBlob((blob) => res(blob), `image/${type}`);
+  });
   
   for (let i = 1; i <= imgArray.length; i++) {
     const e = imgArray[i - 1];
     
-    //svg img
-    if (e == 'svg') {
-      blobs.push({blob, typeFile: e});
-    } 
     //zip
-    else if (e == 'zip') {
+    if (e == 'zip') {
       const zipContent = {};
       const imgTypes = [];
       
@@ -124,28 +90,20 @@ async function imgDownload(types) {
       });
       
       for (const e of imgTypes) {
-        if (e == 'svg') {
-          zipContent[e] = blob;
-        }
-        else {
-          const imgBlob = await getCanvasBlob(e);
-          zipContent[e] = imgBlob;
-        }
+        const imgBlob = await getCanvasBlob(e);
+        zipContent[e] = imgBlob;
       }
       
       const zipBlob = await zipDownload(zipContent);
       blobs.push({blob: zipBlob, typeFile: e});
     }
-    //no svg img
+    //img
     else {
       const imgBlob = await getCanvasBlob(e);
       
       blobs.push({blob: imgBlob, typeFile: e});
     }
   }
-  
-  URL.revokeObjectURL(img.src);
-  URL.revokeObjectURL(url);
   
   return blobs;
 }
