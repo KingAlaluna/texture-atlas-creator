@@ -40,7 +40,7 @@ export const atlasConfig = {
     text: '',
     generalSize: 0,
   },
-  dataImgDownload: ['png', 'webp', 'jpg', 'zip'],
+  dataImgDownload: ['png', 'webp', 'jpeg', 'zip'],
   dataCodeDownload: ['js', 'json', 'zip'],
   dataAllDownload: ['zip'],
   files: null,

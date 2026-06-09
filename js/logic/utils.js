@@ -115,9 +115,9 @@ async function allDownload() {
   
   const allImgDownload = await imgDownload(atlasConfig.dataImgDownload);
   const allCodeDownload = await codeDownload(atlasConfig.dataCodeDownload);
-  const allDownload = await zipDownload([...allImgDownload, ...allCodeDownload]);
+  const allFileDownload = await zipDownload([...allImgDownload, ...allCodeDownload]);
   
-  blobs = allDownload;
+  blobs = allFileDownload;
   
   return blobs;
 }
