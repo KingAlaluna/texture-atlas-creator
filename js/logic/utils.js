@@ -16,7 +16,7 @@ async function codeDownload(content, fileName) {
     js: 'application/javascript',
   };
   
-  if (getType(content) == 'array') {
+  if (getType(content) == 'array' || getType(content) == 'set') {
     for (const e of content) {
       if (e == 'zip') {
         const blob = await zipDownload(atlasConfig.downloadRes.code);
@@ -63,7 +63,12 @@ async function zipDownload(content) {
 
 
 //img download
-function imgDownload(types) {
+const loadImg = (img, url) => new Promise((resolve) => {
+  img.onload = () => resolve();
+  img.src = url;
+})
+
+async function imgDownload(types) {
   const imgArray = [...types];
   
   const sizes = atlasConfig.px;
@@ -91,57 +96,56 @@ function imgDownload(types) {
   canvas.height = sizes.y;
   
   const img = new Image();
-  img.src = url;
+  await loadImg(img, url);
+  
   
   const getCanvasBlob = (type) => new Promise(res => canvas.toBlob(res, `image/${type}`));
   
   
-  return new Promise((resolve) => {
-  img.onload = async () => {
-    ctx.drawImage(img, 0, 0, sizes.x, sizes.y);
+  ctx.drawImage(img, 0, 0, sizes.x, sizes.y);
+  
+  for (let i = 1; i <= imgArray.length; i++) {
+    const e = imgArray[i - 1];
     
-    for (let i = 1; i <= imgArray.length; i++) {
-      const e = imgArray[i - 1];
+    //svg img
+    if (e == 'svg') {
+      blobs.push({blob, typeFile: e});
+    } 
+    //zip
+    else if (e == 'zip') {
+      const zipContent = {};
+      const imgTypes = [];
       
-      //svg img
-      if (e == 'svg') {
-        blobs.push({blob, typeFile: e});
-      } 
-      //zip
-      else if (e == 'zip') {
-        const zipContent = {};
-        const imgTypes = [];
-        
-        imgArray.forEach(e => {
-          if (e == 'zip') return;
-          imgTypes.push(e);
-        });
-        
-        for (const e of imgTypes) {
-          if (e == 'svg') {
-            zipContent[e] = blob;
-          }
-          else {
-            const imgBlob = await getCanvasBlob(e);
-            zipContent[e] = imgBlob;
-          }
+      imgArray.forEach(e => {
+        if (e == 'zip') return;
+        imgTypes.push(e);
+      });
+      
+      for (const e of imgTypes) {
+        if (e == 'svg') {
+          zipContent[e] = blob;
         }
-        
-        const zipBlob = await zipDownload(zipContent);
-        blobs.push({blob: zipBlob, typeFile: e});
+        else {
+          const imgBlob = await getCanvasBlob(e);
+          zipContent[e] = imgBlob;
+        }
       }
-      //no svg img
-      else {
-        const imgBlob = await getCanvasBlob(e);
-        
-        blobs.push({blob: imgBlob, typeFile: e});
-      }
+      
+      const zipBlob = await zipDownload(zipContent);
+      blobs.push({blob: zipBlob, typeFile: e});
     }
-    resolve(blobs);
-    URL.revokeObjectURL(img.src);
-    URL.revokeObjectURL(url);
-  };
-  });
+    //no svg img
+    else {
+      const imgBlob = await getCanvasBlob(e);
+      
+      blobs.push({blob: imgBlob, typeFile: e});
+    }
+  }
+  
+  URL.revokeObjectURL(img.src);
+  URL.revokeObjectURL(url);
+  
+  return blobs;
 }
 
 
