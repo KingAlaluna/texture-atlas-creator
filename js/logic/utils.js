@@ -41,7 +41,7 @@ async function zipDownload(content) {
   const zip = new JSZip();
   
   if (getType(content) == 'array') {
-    content.forEach(e => {
+    for (const e of content) {
       const {
         blob,
         typeFile,
@@ -49,7 +49,7 @@ async function zipDownload(content) {
       
       const data = getType(blob) == 'blob' ? await blob.arrayBuffer() : blob;
       zip.file(`atlas-texture.${typeFile}`, data);
-    });
+    }
   }
   else if (getType(content) == 'object') {
     for (const key in content) {
