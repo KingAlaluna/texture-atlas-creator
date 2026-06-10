@@ -44,5 +44,6 @@ export const atlasConfig = {
   dataCodeDownload: ['js', 'json', 'zip'],
   dataAllDownload: ['zip'],
   files: null,
+  name: 'atlas-texture',
 };
 

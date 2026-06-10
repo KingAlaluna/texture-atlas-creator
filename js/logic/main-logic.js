@@ -124,6 +124,10 @@ function addCodeAtlasTexture() {
   if (!atlasConfig.files) return;
   
   let codeAtlasTexture = '';
+  const itemsPX = {
+    x: atlasConfig.px.x / atlasConfig.items.x,
+    y: atlasConfig.px.y / atlasConfig.items.y,
+  };
   
   for (let i = 0; i < atlasConfig.files.length; i++) {
     const e = atlasConfig.files[i];
@@ -132,8 +136,8 @@ function addCodeAtlasTexture() {
     codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < atlasConfig.files.length - 1 ? ',' : ''}`;
   }
   
-  atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture}};`;
-  atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')}}`;
+  atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture},atlas:{px:{x:${atlasConfig.px.x},y:${atlasConfig.px.y}},itemsPX:{x:${itemsPX.x},y:${itemsPX.y}},itemsQuantity:{x:${atlasConfig.items.x},y:${atlasConfig.items.y}}};`;
+  atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')},"atlas":{"px":{"x":${atlasConfig.px.x},"y":${atlasConfig.px.y}},"itemsPX":{"x":${itemsPX.x},"y":${itemsPX.y}},"itemsQuantity":{"x":${atlasConfig.items.x},"y":${atlasConfig.items.y}}}`;
 }
 
 

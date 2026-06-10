@@ -29,7 +29,7 @@ async function codeDownload(content, fileName) {
   } else {
     const typeFile = fileName.split('.').pop();
     const blob = new Blob([content], {type: typeFileTemplates[typeFile]});
-    blobs.push({blob, typeFile});
+    blobs.push({blob, typeFile, fileName});
   }
   
   return blobs;
@@ -45,16 +45,17 @@ async function zipDownload(content) {
       const {
         blob,
         typeFile,
+        fileName = atlasConfig.name,
       } = e;
       
       const data = getType(blob) == 'blob' ? await blob.arrayBuffer() : blob;
-      zip.file(`atlas-texture.${typeFile}`, data);
+      zip.file(`${fileName}.${typeFile}`, data);
     }
   }
   else if (getType(content) == 'object') {
     for (const key in content) {
       const data = getType(content[key]) == 'blob' ? await content[key].arrayBuffer() : content[key];
-      zip.file(`atlas-texture.${key}`, data);
+      zip.file(`${fileName}.${key}`, data);
     }
   }
   
@@ -111,8 +112,11 @@ async function imgDownload(types) {
 
 //all download
 async function allDownload() {
-  const allImgDownload = await imgDownload(atlasConfig.dataImgDownload);
-  const allCodeDownload = await codeDownload(atlasConfig.dataCodeDownload);
+  const dataImgDownload = atlasConfig.dataImgDownload.filter(e => e != 'zip');
+  const dataCodeDownload = atlasConfig.dataCodeDownload.filter(e => e != 'zip');
+  
+  const allImgDownload = await imgDownload(dataImgDownload);
+  const allCodeDownload = await codeDownload(dataCodeDownload);
   const allFileDownload = await zipDownload([...allImgDownload, ...allCodeDownload]);
   
   return [{blob: allFileDownload, typeFile: 'zip'}];
@@ -128,20 +132,22 @@ export async function download(type) {
     blobs = await generalDownload();
   }
   else if (type == 'text') {
-    blobs = await codeDownload(atlasConfig.allImgInfo.text, 'info-all-choose-img.txt');
+    blobs = await codeDownload(atlasConfig.allImgInfo.text, `${atlasConfig.name}-chosen-images-info.txt`);
   }
   
   const link = document.createElement('a');
   
   blobs.forEach(e => {
     const {
-      blob, typeFile,
+      blob, 
+      typeFile,
+      fileName = atlasConfig.name,
     } = e;
     
     const url = URL.createObjectURL(blob);
     
     link.href = url;
-    link.download = `atlas-texture.${typeFile}`;
+    link.download = `${fileName}.${typeFile}`;
     link.click();
     URL.revokeObjectURL(url);
   });
