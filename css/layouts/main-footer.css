@@ -1,7 +1,6 @@
 .footer-copy-wrap {
   height: max-content;
   width: 100%;
-  background-color: var(--bg);
   border-top: var(--border);
   padding: 2rem 1rem;
   margin-top: 1rem;

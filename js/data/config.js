@@ -31,9 +31,7 @@ export const atlasConfig = {
     all: new Set(),
   },
   downloadRes: {
-    //img: {},
     code: {},
-    //all: {},
   },
   allImgInfo: {
     array: [],
@@ -45,5 +43,9 @@ export const atlasConfig = {
   dataAllDownload: ['zip'],
   files: null,
   name: 'atlas-texture',
+  paramTemplates: {
+    px: {},
+    items: {},
+  },
 };
 

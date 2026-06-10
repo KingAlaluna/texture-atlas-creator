@@ -3,8 +3,8 @@
   flex-shrink: 0;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  color: var(--text);
-  stroke: var(--text);
+  color: var(--text-color);
+  stroke: var(--text-color);
   color-scheme: var(--color-scheme);
 }
 
@@ -21,7 +21,7 @@ button, input {
 }
 
 .root {
-  background: var(--bg);
+  background: var(--root-bg);
   padding-top: 4rem;
   overflow-y: auto;
 }

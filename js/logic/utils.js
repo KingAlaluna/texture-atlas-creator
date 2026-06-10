@@ -3,7 +3,7 @@ import {html, atlasConfig} from '../data/config.js';
 
 
 export const fileSize = (sizeValue) => sizeValue / 1024 / 1024 / 1024 >= 1 ? `${(sizeValue / 1024 / 1024 / 1024).toFixed(2)}GB` : sizeValue / 1024 / 1024 >= 1 ? `${(sizeValue / 1024 / 1024).toFixed(2)}MB` : sizeValue / 1024 >= 1 ? `${(sizeValue / 1024).toFixed(2)}KB` : `${sizeValue}B`;
-const getType = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+export const getType = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 
 
 //code download
@@ -77,8 +77,8 @@ async function imgDownload(types) {
     canvas.toBlob((blob) => res(blob), `image/${type}`);
   });
   
-  for (let i = 1; i <= imgArray.length; i++) {
-    const e = imgArray[i - 1];
+  for (let i = 0; i < imgArray.length; i++) {
+    const e = imgArray[i];
     
     //zip
     if (e == 'zip') {
@@ -137,7 +137,7 @@ export async function download(type) {
   
   const link = document.createElement('a');
   
-  blobs.forEach(e => {
+  for (const e of blobs) {
     const {
       blob, 
       typeFile,
@@ -150,7 +150,7 @@ export async function download(type) {
     link.download = `${fileName}.${typeFile}`;
     link.click();
     URL.revokeObjectURL(url);
-  });
+  }
 }
 
 

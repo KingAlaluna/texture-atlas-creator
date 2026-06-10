@@ -7,7 +7,7 @@
   left: 0;
   z-index: 100;
   backdrop-filter: blur(20px);
-  background: var(--bg);
+  background: var(--main-banner-bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@
     }
     
     .logo-text {
-      color: var(--text-2);
+      color: var(--logo-text);
       font-size: 1.5rem;
       flex: 0 1 auto;
     }

@@ -1,16 +1,22 @@
 [data-theme="dark"] {
-  --bg: hsla(0, 0%, 5%, 1);
-  --bg-2: hsla(0, 0%, 5%, 0.5);
-  --footer-copy-logo-bg: hsla(0, 0%, 100%, 0.1);
-  --header__nav-bg: hsla(0, 0%, 100%, 0.1);
-  --bg-3: hsla(0, 0%, 40%, 0.4);
+  --root-bg: var(--black-850);
+  --btn-wrap__btn-bg: var(--black-850);
+  --main-banner-bg: var(--black-850-a50);
   
-  --border: 1px solid hsla(0, 0%, 100%, 0.5);
+  --footer-copy-logo-bg: var(--white-50-a10);
+  --header__nav-bg: var(--white-50-a10);
   
-  --text: hsla(0, 0%, 90%, 1);
-  --text-2: hsla(120, 100%, 60%, 1);
-  --text-3: hsla(0, 100%, 60%, 1);
-  --footer-copy-text-color: hsla(0, 0%, 60%, 1);
+  --border: 1px solid var(--white-150-a50);
+  
+  --text-color: var(--white-150);
+  
+  --logo-text: var(--green-400);
+  --input-accent-color: var(--green-400);
+  --img-info-color: var(--green-400);
+  --img-data-wrap-border-color: var(--green-400);
+  --info-link-color: var(--green-400);
+  
+  --footer-copy-text-color: var(--grey-400);
   --logo-bg: var(--grey-600-a30);
   
   --color-scheme: dark;

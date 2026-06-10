@@ -4,18 +4,71 @@ A lightweight, high-performance web utility engineered specifically for generati
 
 ## Links
 [Texture Atlas Creator (GitHub Pages)](https://kingalaluna.github.io/texture-atlas-creator/)
+[Texture Atlas Creator (Cloudflare)](https://texture-atlas-creator.pages.dev/)
 
 ## Core Features
 
 * **Zero Installation (100% Client-Side):** Works directly in any modern mobile or desktop browser. No environment setups or software downloads required.
 * **Strict Uniform Grid Layout:** Designed specifically for identically sized geometric sprites and animation frames (e.g., matching 64x64, 128x128, or custom rectangular shapes).
 * **Automated Scaling Engine:** If source images vary in dimensions, the generator automatically normalizes and adapts them into a uniform shape based on your defined atlas resolution (X/Y) and item distribution targets.
-* **1-Based Matrix Manifests:** Outputs highly minified, optimized, production-ready JavaScript or JSON data structures that map asset names directly to their row and column indexes starting from **1**:
+* **1-Based Matrix Manifests:** Outputs highly minified, optimized, production-ready JavaScript or JSON data structures that map asset names directly to their row and column indexes starting from 1.
 
-### Examples
+### Output Examples
 ```json
-{"hero_walk_01.png":[1,1],"hero_walk_02.png":[2,1],"enemy_idle.webp":[1,2]}
+{"frames":{"hero_walk_01.png":[1,1],"hero_walk_02.jpeg":[2,1],"enemy_idle.webp":[1,2]},"meta":{"size":{"x":2048,"y":2048},"grid":{"cols":2,"rows":2},"itemSize":{"x":1024,"y":1024},"totalItems":3}}
 ```
 ```javascript
-const atlasTexture={'hero_walk_01.png':[1,1],'hero_walk_02.png':[2,1],'enemy_idle.webp':[1,2]};
+const atlasTexture={frames:{'hero_walk_01.png':[1,1],'hero_walk_02.jpeg':[2,1],'enemy_idle.webp':[1,2]},meta:{size:{x:2048,y:2048},grid:{cols:2,rows:2},itemSize:{x:1024,y:1024},totalItems:3}};
 ```
+### Human-Readable Structure Example
+**Note:** Texture Atlas Creator generates strictly minified versions for maximum production efficiency. The expanded example below is provided solely to demonstrate the internal data schema clearly:
+```json
+{
+  "frames": {
+    "hero_walk_01.png": [1, 1],
+    "hero_walk_02.jpeg": [2, 1],
+    "enemy_idle.webp": [1, 2]
+  },
+  "meta": {
+    "size": {
+      "x": 2048,
+      "y": 2048
+    },
+    "grid": {
+      "cols": 2,
+      "rows": 2
+    },
+    "itemSize": {
+      "x": 1024,
+      "y": 1024
+    },
+    "totalItems": 3
+  }
+}
+```
+```javascript
+const atlasTexture = {
+  frames: {
+    'hero_walk_01.png': [1, 1],
+    'hero_walk_02.jpeg': [2, 1],
+    'enemy_idle.webp': [1, 2]
+  },
+  meta: {
+    size: {
+      x: 2048,
+      y: 2048
+    },
+    grid: {
+      cols: 2,
+      rows: 2
+    },
+    itemSize: {
+      x: 1024,
+      y: 1024
+    },
+    totalItems: 3
+  }
+};
+```
+### Technical Note on Image Paths
+The generated data manifest intentionally omits fixed file paths or specific image format URLs. Since the utility allows users to download the atlas in multiple graphic formats simultaneously (e.g., PNG, WebP, and JPEG), hardcoding a single extension or absolute path inside the data structure would be counterproductive and architecturally inflexible.

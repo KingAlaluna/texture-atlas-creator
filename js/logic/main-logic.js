@@ -1,9 +1,10 @@
 import {html, atlasConfig} from '../data/config.js';
 import {applyTheme} from './theme.js';
-import {} from './add-elements.js';
-import {} from './main-footer.js';
-import {fileSize, download} from './utils.js';
-import {} from '../../sw-init.js';
+import {fileSize, download, getType} from './utils.js';
+
+import './add-elements.js';
+import './main-footer.js';
+import '../../sw-init.js';
 
 
 //btn
@@ -62,7 +63,6 @@ html.root.addEventListener('input', (e) => {
     atlasConfig.allImgInfo.generalSize = 0;
     
     atlasConfig.files = input.files;
-    console.log(atlasConfig.files);
     
     for (let i = 0; i < atlasConfig.files.length; i++) {
       const e = atlasConfig.files[i];
@@ -92,7 +92,13 @@ html.root.addEventListener('input', (e) => {
     const [elementType, key, val] = value.split('-');
     if (elementType !== 'atlas') return;
     
-    atlasConfig[key][val] = Number(target.value);
+    const targetValue = Number.isNaN(Number(target.value)) ? target.value : Number(target.value);
+    
+    if (key && val) {
+      atlasConfig[key][val] = targetValue;
+    } else {
+      atlasConfig[key] = targetValue;
+    }
   }
   
   
@@ -116,15 +122,16 @@ html.root.addEventListener('input', (e) => {
       atlasConfig.download[typeValue][checked ? 'add' : 'delete'](input.value);
     }
   }
-  console.log('atlasConfig', atlasConfig);
 });
 
 
 function addCodeAtlasTexture() {
   if (!atlasConfig.files) return;
   
-  let codeAtlasTexture = '';
-  const itemsPX = {
+  let jsCode = '';
+  let jsonCode = '';
+  
+  const itemSize = {
     x: atlasConfig.px.x / atlasConfig.items.x,
     y: atlasConfig.px.y / atlasConfig.items.y,
   };
@@ -133,18 +140,21 @@ function addCodeAtlasTexture() {
     const e = atlasConfig.files[i];
     
     const {name} = e;
-    codeAtlasTexture += `'${name}':[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < atlasConfig.files.length - 1 ? ',' : ''}`;
+    
+    const jsName = name.replace(/\'/g, '\\\'');
+    const itemData = `:[${(i % atlasConfig.items.x) + 1},${Math.floor(i / atlasConfig.items.x) + 1}]${i < atlasConfig.files.length - 1 ? ',' : ''}`;
+    
+    jsCode += `'${jsName}'${itemData}`;
+    jsonCode += `"${name}"${itemData}`;
   }
   
-  atlasConfig.downloadRes.code.js = `const atlasTexture={${codeAtlasTexture},atlas:{px:{x:${atlasConfig.px.x},y:${atlasConfig.px.y}},itemsPX:{x:${itemsPX.x},y:${itemsPX.y}},itemsQuantity:{x:${atlasConfig.items.x},y:${atlasConfig.items.y}}};`;
-  atlasConfig.downloadRes.code.json = `{${codeAtlasTexture.replace(/\x27/g, '"')},"atlas":{"px":{"x":${atlasConfig.px.x},"y":${atlasConfig.px.y}},"itemsPX":{"x":${itemsPX.x},"y":${itemsPX.y}},"itemsQuantity":{"x":${atlasConfig.items.x},"y":${atlasConfig.items.y}}}`;
+  atlasConfig.downloadRes.code.js = `const atlasTexture={frames:{${jsCode}},meta:{size:{x:${atlasConfig.px.x},y:${atlasConfig.px.y}},grid:{cols:${atlasConfig.items.x},rows:${atlasConfig.items.y}},itemSize:{x:${itemSize.x},y:${itemSize.y}},totalItems:${atlasConfig.files.length}}};`;
+  atlasConfig.downloadRes.code.json = `{"frames":{${jsonCode}},"meta":{"size":{"x":${atlasConfig.px.x},"y":${atlasConfig.px.y}},"grid":{"cols":${atlasConfig.items.x},"rows":${atlasConfig.items.y}},"itemSize":{"x":${itemSize.x},"y":${itemSize.y}},"totalItems":${atlasConfig.files.length}}}`;
 }
 
 
 //atlas img view
 function atlasImgView() {
-  if (!atlasConfig.files || atlasConfig.files.length === 0) return;
-
   const sizes = atlasConfig.px;
   const columns = atlasConfig.items.x;
   const rows = atlasConfig.items.y;
@@ -154,7 +164,10 @@ function atlasImgView() {
 
   canvas.width = sizes.x;
   canvas.height = sizes.y;
-
+  canvas.style.aspectRatio = `${sizes.x} / ${sizes.y}`;
+  
+  if (!atlasConfig.files || atlasConfig.files.length === 0) return;
+  
   ctx.clearRect(0, 0, sizes.x, sizes.y);
 
   const cellWidth = sizes.x / columns;

@@ -40,29 +40,67 @@
     
     <main class="main">
       <section class="section">
-        <h2>Увага! Статус проєкта ALPHA, деякий функціонал ще не дороблено!</h2>
+        <h2>Ознайомлення</h2>
+        <p><strong>Texture Atlas Creator</strong> — легка, високопродуктивна веб-утиліта, розроблена спеціально для створення однорідних текстурних атласів та ультракомпактних маніфестів координат сітки.</p>
+        <p><a class="info-link" href="https://github.com/KingAlaluna/texture-atlas-creator" target="_blank" rel="noopener noreferrer">Документація & Приклади</a></p>
+        
         <h2>Введіть параметри</h2>
-        <p>За замовчуванням рядків та колон по 16 (256 предметів) а розмір атласа 2048px × 2048px</p>
+        <p>За замовчуванням рядків та колон по 16 (256 предметів), розмір атласа 2048px × 2048px, а ім'я "atlas-texture".</p>
         <div class="input-wrap">
           <input class="input-atlas-param" data-type="input:atlas-items-x" type="number" placeholder="Кількість колон"/>
           <input class="input-atlas-param" data-type="input:atlas-items-y" type="number" placeholder="Кількість рядків"/>
           <input class="input-atlas-param" data-type="input:atlas-px-x" type="number" placeholder="Атлас px по x"/>
           <input class="input-atlas-param" data-type="input:atlas-px-y" type="number" placeholder="Атлас px по y"/>
+          <input class="input-atlas-param" data-type="input:atlas-name" type="string" placeholder="atlas-texture"/>
         </div>
       </section>
       
       <section class="section">
         <h2>Готові шаблони px атласу</h2>
-        <div class="atlas-value-templates-wrap" data-type="px">
-          <!--content add js-->
-        </div>
+        <section class="section">
+          <h3>Квадратні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:px:square">
+            <!--content add js-->
+          </div>
+        </section>
+        
+        <section class="section">
+          <h3>Альбомні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:px:landscape">
+            <!--content add js-->
+          </div>
+        </section>
+        
+        <section class="section">
+          <h3>Портретні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:px:portrait">
+            <!--content add js-->
+          </div>
+        </section>
       </section>
       
       <section class="section">
         <h2>Готові шаблони елементів атласу</h2>
-        <div class="atlas-value-templates-wrap" data-type="items">
-          <!--content add js-->
-        </div>
+        <section class="section">
+          <h3>Квадратні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:items:square">
+            <!--content add js-->
+          </div>
+        </section>
+        
+        <section class="section">
+          <h3>Альбомні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:items:landscape">
+            <!--content add js-->
+          </div>
+        </section>
+        
+        <section class="section">
+          <h3>Портретні</h3>
+          <div class="atlas-value-templates-wrap" data-type="params:items:portrait">
+            <!--content add js-->
+          </div>
+        </section>
       </section>
       
       <label class="choose-img-label" data-type="input:choose-img">
@@ -97,21 +135,21 @@
       
       <section class="section">
         <h2>Завантажити зображення атласа</h2>
-        <div class="atlas-value-templates-wrap" data-type="img-download">
+        <div class="atlas-value-templates-wrap" data-type="download:img">
           <!--content add js-->
         </div>
       </section>
       
       <section class="section">
         <h2>Завантажити код атласа</h2>
-        <div class="atlas-value-templates-wrap" data-type="code-download">
+        <div class="atlas-value-templates-wrap" data-type="download:code">
           <!--content add js-->
         </div>
       </section>
       
       <section class="section">
         <h2>Завантажити все</h2>
-        <div class="atlas-value-templates-wrap" data-type="all-download">
+        <div class="atlas-value-templates-wrap" data-type="download:all">
           <!--content add js-->
         </div>
       </section>
@@ -151,7 +189,7 @@
     </address>
     <div class="copy-wrap">
       <img class="logo" src="img/my-logo/logo.svg" alt="Моє лого">
-      <span class="copy-text">&copy; Texture Atlas Creator 2026 | v0.1.0-alpha-12.</span>
+      <span class="copy-text">&copy; Texture Atlas Creator 2026 | v1.0.0.</span>
     </div>
   </footer>
   </div>

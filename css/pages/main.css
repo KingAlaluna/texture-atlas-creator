@@ -8,9 +8,13 @@
     height: max-content;
   }
   
+  .info-link {
+    color: var(--info-link-color);
+  }
+  
   .atlas-canvas {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2048 / 2048;
     background: var(--header__nav-bg);
   }
   
@@ -22,7 +26,7 @@
   }
   
   .input-wrap {
-    grid-template: auto / repeat(auto-fill, minmax(8rem, 1fr));
+    grid-template: auto / repeat(auto-fill, minmax(10rem, 1fr));
     
     .input-atlas-param {
       width: 100%;
@@ -37,7 +41,7 @@
   }
   
   .atlas-value-templates-wrap {
-    grid-template: auto / repeat(auto-fill, minmax(8rem, 1fr));
+    grid-template: auto / repeat(auto-fill, minmax(10rem, 1fr));
     
     .label {
       width: 100%;
@@ -53,7 +57,7 @@
       text-align: right;
       
       input {
-        accent-color: var(--text-2);
+        accent-color: var(--input-accent-color);
       }
     }
   }
@@ -108,7 +112,7 @@
     button {
       width: 3rem;
       height: 3rem;
-      background: var(--bg);
+      background: var(--btn-wrap__btn-bg);
       
       svg {
         width: 2rem;
@@ -127,7 +131,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--text-2);
+      border-bottom: 1px solid var(--img-data-wrap-border-color);
       gap: 2rem;
       
       .name {
@@ -136,7 +140,7 @@
         word-break: break-word;
       }
       .info {
-        color: var(--text-2);
+        color: var(--img-info-color);
         width: min-content;
         text-align: right;
       }
